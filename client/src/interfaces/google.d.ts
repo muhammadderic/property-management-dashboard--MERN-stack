@@ -1,5 +1,19 @@
+export interface CredentialResponse {
+  credential?: string;
+  select_by?:
+  | "auto"
+  | "user"
+  | "user_1tap"
+  | "user_2tap"
+  | "btn"
+  | "btn_confirm"
+  | "brn_add_session"
+  | "btn_confirm_add_session";
+  clientId?: string;
+}
+
 export interface IdConfiguration {
-  client_id: string;
+  client_id: string | undefined;
   auto_select?: boolean;
   callback: (handleCredentialResponse: CredentialResponse) => void;
   login_uri?: string;
@@ -12,20 +26,6 @@ export interface IdConfiguration {
   ux_mode?: "popup" | "redirect";
   allowed_parent_origin?: string | string[];
   intermediate_iframe_close_callback?: (...args: any[]) => void;
-}
-
-export interface CredentialResponse {
-  credential?: string;
-  select_by?:
-    | "auto"
-    | "user"
-    | "user_1tap"
-    | "user_2tap"
-    | "btn"
-    | "btn_confirm"
-    | "brn_add_session"
-    | "btn_confirm_add_session";
-  clientId?: string;
 }
 
 export interface GsiButtonConfiguration {
@@ -81,19 +81,22 @@ export interface Google {
     id: {
       initialize: (input: IdConfiguration) => void;
       prompt: (
-        momentListener?: (res: PromptMomentNotification) => void
+        momentListener?: (res: PromptMomentNotification) => void,
       ) => void;
       renderButton: (
         parent: HTMLElement,
-        options: GsiButtonConfiguration
+        options: GsiButtonConfiguration,
       ) => void;
       disableAutoSelect: () => void;
-      storeCredential: (credentials: Credential, callback: () => void) => void;
+      storeCredential: (
+        credentials: Credential,
+        callback: () => void,
+      ) => void;
       cancel: () => void;
       onGoogleLibraryLoad: () => void;
       revoke: (
         hint: string,
-        callback: (done: RevocationResponse) => void
+        callback: (done: RevocationResponse) => void,
       ) => void;
     };
   };
